@@ -1,0 +1,17 @@
+name,type,smart_contract,turing_complete,platform_transaction_speed,popularity,MinArbitraryData
+Bitcoin,Public,No,No,Low,High,80
+Ethereum,Public,Yes,Yes,Low,High,46000
+Stellar,Public,Yes,No,Medium,High,28
+EOS,Public,Yes,Yes,High,Medium,256
+IOTA,Public,No,No,Low,Medium,1300
+Hyperledger,Private,Yes,Yes,High,High,20
+Multichain,Private,No,No,Medium,Medium,80
+R3 Corda,Private,Yes,Yes,High,Low,100
+Stratis,Private,Yes,No,High,Low,40
+Neo,Public,Yes,Yes,Medium,Medium,255
+Cardano,Public,No,No,Medium,Medium,500
+Ripple,Public,No,No,High,High,150
+QTUM,Public,Yes,Yes,Low,Medium,2000
+ICON,Public,Yes,No,High,Medium,512000
+VeChain,Public,Yes,No,Medium,Medium,150
+Wanchain,Public,Yes,Yes,Low,Medium,150
