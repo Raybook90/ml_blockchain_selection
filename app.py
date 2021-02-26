@@ -2,6 +2,7 @@ import os
 from flask import Flask, jsonify, request, render_template
 from flask_restful import Api, Resource, reqparse
 from model.decisionTree import train_decisiontree
+from model.decisionTreeSQLite import train_decision_tree
 import joblib
 import numpy as np
 import sqlite3
@@ -10,10 +11,17 @@ import json
 app = Flask(__name__)
 api = Api(app)
 
-if not os.path.isfile('decision-tree.model'):
-    train_decisiontree()
+# if not os.path.isfile('decision-tree.model'):
+#     train_decisiontree()
+#
+# model = joblib.load('decision-tree.model')
+# label_encoder = joblib.load('label_encoder.joblib')
+# dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
 
-model = joblib.load('decision-tree.model')
+if not os.path.isfile('decision-tree-26-02-2021.model'):
+    train_decision_tree()
+
+model = joblib.load('decision-tree-26-02-2021.model')
 label_encoder = joblib.load('label_encoder.joblib')
 dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
 
@@ -28,7 +36,7 @@ def query_available_blockchains():
     conn = sqlite3.connect(dbfile)
     cur = conn.cursor()
     cur.execute("""
-    SELECT name, type, blocktime, tps, smart_contract, turing_complete, platform_transaction_speed, popularity 
+    SELECT name, type, blocktime, tps, smart_contract, turing_complete, platform_transaction_speed, popularity, MinArbitraryData 
             FROM blockchains_for_dataset
             NATURAL JOIN attributes_for_dataset
     """)
@@ -49,13 +57,14 @@ def result():
         turingComplete = request.form.get('turingComplete')
         transactionSpeed = request.form.get('transactionSpeed')
         popularity = request.form.get('popularity')
-        to_predict_list = [int(type), int(smartContract), int(turingComplete), int(transactionSpeed), int(popularity)]
+        minArbitraryData = request.form.get('MinArbitraryData')
+        to_predict_list = [int(type), int(smartContract), int(turingComplete), int(transactionSpeed), int(popularity), minArbitraryData]
         selected_blockchain = value_predictor(to_predict_list)
         return render_template("prediction.html", prediction=selected_blockchain)
 
 
 def value_predictor(to_predict_list):
-    to_predict = np.array(to_predict_list).reshape(1,5)
+    to_predict = np.array(to_predict_list).reshape(1,len(to_predict_list))
     prediction_without_label = model.predict(to_predict)
     result_with_label = label_encoder.inverse_transform(prediction_without_label)
     return result_with_label[0]

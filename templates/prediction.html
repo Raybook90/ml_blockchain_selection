@@ -20,36 +20,36 @@
 <div>
   <form action="/result" method="POST">
     <div class="col-md-6">
-        <label for="formTypeInput" class="form-label">Type</label>
-        <select name='Type' class="form-select" id="formTypeInput" aria-label="Default select example">
-          <option selected>Choose...<option/>
+        <label for="formTypeInput" class="form-label"><strong>Type</strong></label>
+        <select name='Type' class="form-select" id="formTypeInput" aria-label="Default select example" required>
+          <option value="" selected>Choose...<option/>
           <option value="0">Private</option>
           <option value="1">Public</option>
         </select>
     </div>
     <br>
     <div class="col-md-6">
-        <label for="formSmartContractInput" class="form-label">Smart Contract Supportability</label>
-        <select name='smartContract' class="form-select" id="formSmartContractInput" aria-label="Default select example">
-          <option selected>Choose...<option/>
+        <label for="formSmartContractInput" class="form-label"><strong>Smart Contract Supportability</strong></label>
+        <select name='smartContract' class="form-select" id="formSmartContractInput" aria-label="Default select example" required>
+          <option value="" selected>Choose...<option/>
           <option value="0">No</option>
           <option value="1">Yes</option>
         </select>
     </div>
       <br>
     <div class="col-md-6">
-        <label for="formTuringCompleteInput" class="form-label">Turing Completness</label>
-        <select name='turingComplete' class="form-select" id="formTuringCompleteInput" aria-label="Default select example">
-          <option selected>Choose...<option/>
+        <label for="formTuringCompleteInput" class="form-label"><strong>Turing Completness</strong></label>
+        <select name='turingComplete' class="form-select" id="formTuringCompleteInput" aria-label="Default select example" required>
+          <option value="" selected>Choose...<option/>
           <option value="0">No</option>
           <option value="1">Yes</option>
         </select>
     </div>
     <br>
     <div class="col-md-6">
-        <label for="formTransactionSpeedInput" class="form-label">Platform Transaction Speed</label>
-        <select name='transactionSpeed' class="form-select" id="formTransactionSpeedInput" aria-label="Default select example">
-          <option selected>Choose...<option/>
+        <label for="formTransactionSpeedInput" class="form-label"><strong>Platform Transaction Speed</strong></label>
+        <select name='transactionSpeed' class="form-select" id="formTransactionSpeedInput" aria-label="Default select example" required>
+          <option value="" selected>Choose...<option/>
           <option value="1">Low</option>
           <option value="2">Medium</option>
           <option value="3">High</option>
@@ -57,13 +57,18 @@
     </div>
     <br>
     <div class="col-md-6">
-        <label for="formPopularityInput" class="form-label">Popularity</label>
-        <select name='popularity' class="form-select" id="formPopularityInput" aria-label="Default select example">
-          <option selected>Choose...<option/>
+        <label for="formPopularityInput" class="form-label"><strong>Popularity</strong></label>
+        <select name='popularity' class="form-select" id="formPopularityInput" aria-label="Default select example" required>
+          <option value="" selected>Choose...<option/>
           <option value="1">Low</option>
           <option value="2">Medium</option>
           <option value="3">High</option>
         </select>
+    </div>
+    <br>
+      <div class="col-md-6">
+          <label for="formMinDataInput" class="form-label"><strong>Min Arbitrary Data in Bytes</strong></label>
+        <input type="number" id="formMinDataInput" name="MinArbitraryData" min="20" max="512000" required>
     </div>
     <br>
     <input type="submit" value="Select">
