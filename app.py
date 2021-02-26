@@ -52,6 +52,10 @@ def prediction():
 @app.route('/result', methods=['POST'])
 def result():
     if request.method == 'POST':
+        dict_type = {'1': 'Public', '0': 'Private'}
+        dict_yes_no = {'1': 'Yes', '0': 'No'}
+        dict_ordinal = {'1': 'Low', '2': 'Medium', '3': 'High'}
+
         type = request.form.get('Type')
         smartContract = request.form.get('smartContract')
         turingComplete = request.form.get('turingComplete')
@@ -60,7 +64,13 @@ def result():
         minArbitraryData = request.form.get('MinArbitraryData')
         to_predict_list = [int(type), int(smartContract), int(turingComplete), int(transactionSpeed), int(popularity), minArbitraryData]
         selected_blockchain = value_predictor(to_predict_list)
-        return render_template("prediction.html", prediction=selected_blockchain)
+        return render_template("prediction.html", original_input=
+        {'Type': dict_type[type],
+         'Smart Contracts': dict_yes_no[smartContract],
+         'Turing-complete': dict_yes_no[turingComplete],
+         'Transaction Speed': dict_ordinal[transactionSpeed],
+         'Popularity': dict_ordinal[popularity],
+         'Data size': minArbitraryData}, prediction=selected_blockchain)
 
 
 def value_predictor(to_predict_list):
@@ -74,15 +84,21 @@ class MakePrediction(Resource):
     @staticmethod
     def post():
         model_post_args = reqparse.RequestParser()
-        model_post_args.add_argument("type", type=int, help="Preferred Type of BC is required", required=True, location = 'form')
+        model_post_args.add_argument("type", type=int, help="Preferred Type of BC is required", required=True,
+                                     location='form')
         model_post_args.add_argument("smart_contract", type=int, help="Smart Contract Supportability is required",
-                                     required=True)
-        model_post_args.add_argument("turing_complete", type=int, help="Turing Completeness is required", required=True)
-        model_post_args.add_argument("transaction_speed", type=int, help="Transaction Speed is required", required=True)
-        model_post_args.add_argument("popularity", type=int, help="Popularity is required", required=True)
+                                     required=True, location='form')
+        model_post_args.add_argument("turing_complete", type=int, help="Turing Completeness is required", required=True,
+                                     location='form')
+        model_post_args.add_argument("transaction_speed", type=int, help="Transaction Speed is required", required=True,
+                                     location='form')
+        model_post_args.add_argument("popularity", type=int, help="Popularity is required", required=True,
+                                     location='form')
+        model_post_args.add_argument("data_size", type=int, help="Please specify minimum amount of data (bytes) that "
+                                                                 "should be supported", required=True, location='form')
         args = model_post_args.parse_args()
         to_predict_list = [args['type'], args['smart_contract'], args['turing_complete'], args['transaction_speed'],
-                           args['popularity']]
+                           args['popularity'], args['data_size']]
         prediction = value_predictor(to_predict_list)
         return jsonify({
             'Prediction': prediction
@@ -95,7 +111,8 @@ class Blockchains(Resource):
         conn = sqlite3.connect(dbfile)
         cur = conn.cursor()
         cur.execute("""
-            SELECT name, type, blocktime, tps, smart_contract, turing_complete, platform_transaction_speed, popularity 
+            SELECT name, type, blocktime, tps, smart_contract, turing_complete, platform_transaction_speed, popularity, 
+            MinArbitraryData as data_size
             FROM blockchains_for_dataset
             NATURAL JOIN attributes_for_dataset
         """)
@@ -105,8 +122,8 @@ class Blockchains(Resource):
         conn.commit()
         conn.close()
         json_data=[]
-        for result in rv:
-            json_data.append(dict(zip(row_headers,result)))
+        for row in rv:
+            json_data.append(dict(zip(row_headers,row)))
         return jsonify(json_data)
         # return json.dumps([dict(ix) for ix in rows])
 

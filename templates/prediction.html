@@ -76,6 +76,16 @@
 </div>
 <br>
 <br>
-<strong>Blockchain selected: {{ prediction }}</strong>
+<div class="result" align="center">
+    {% if prediction %}
+        {% for variable, value in original_input.items() %}
+            <b>{{ variable }}</b> : {{ value }}
+        {% endfor %}
+        <br>
+        <br> Predicted Blockchain:
+           <p style="font-size:50px">{{ prediction }}</p>
+    {% endif %}
+</div>
+<!--<strong>Blockchain selected: {{ prediction }}</strong>-->
 </body>
 </html>
