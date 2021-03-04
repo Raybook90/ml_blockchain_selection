@@ -11,10 +11,10 @@ import json
 app = Flask(__name__)
 api = Api(app)
 
-# if not os.path.isfile('decision-tree.model'):
+# if not os.path.isfile('decision-tree-without-datasize-feature.model'):
 #     train_decisiontree()
 #
-# model = joblib.load('decision-tree.model')
+# model = joblib.load('decision-tree-without-datasize-feature.model')
 # label_encoder = joblib.load('label_encoder.joblib')
 # dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
 
@@ -80,23 +80,27 @@ def value_predictor(to_predict_list):
     return result_with_label[0]
 
 
+# Define parser and request args
+parser = reqparse.RequestParser()
+parser.add_argument("type", type=int, help="Preferred Type of BC is required", required=True,
+                    location='json')
+parser.add_argument("smart_contract", type=int, help="Smart Contract Supportability is required",
+                    required=True, location='json')
+parser.add_argument("turing_complete", type=int, help="Turing Completeness is required", required=True,
+                    location='json')
+parser.add_argument("transaction_speed", type=int, help="Transaction Speed is required", required=True,
+                    location='json')
+parser.add_argument("popularity", type=int, help="Popularity is required", required=True,
+                    location='json')
+parser.add_argument("data_size", type=int, help="Please specify minimum amount of data (bytes) that "
+                                                         "should be supported", required=True, location='json')
+
+
 class MakePrediction(Resource):
     @staticmethod
     def post():
-        model_post_args = reqparse.RequestParser()
-        model_post_args.add_argument("type", type=int, help="Preferred Type of BC is required", required=True,
-                                     location='form')
-        model_post_args.add_argument("smart_contract", type=int, help="Smart Contract Supportability is required",
-                                     required=True, location='form')
-        model_post_args.add_argument("turing_complete", type=int, help="Turing Completeness is required", required=True,
-                                     location='form')
-        model_post_args.add_argument("transaction_speed", type=int, help="Transaction Speed is required", required=True,
-                                     location='form')
-        model_post_args.add_argument("popularity", type=int, help="Popularity is required", required=True,
-                                     location='form')
-        model_post_args.add_argument("data_size", type=int, help="Please specify minimum amount of data (bytes) that "
-                                                                 "should be supported", required=True, location='form')
-        args = model_post_args.parse_args()
+
+        args = parser.parse_args()
         to_predict_list = [args['type'], args['smart_contract'], args['turing_complete'], args['transaction_speed'],
                            args['popularity'], args['data_size']]
         prediction = value_predictor(to_predict_list)
@@ -126,6 +130,13 @@ class Blockchains(Resource):
             json_data.append(dict(zip(row_headers,row)))
         return jsonify(json_data)
         # return json.dumps([dict(ix) for ix in rows])
+
+
+# class BlockchainByShortName(Resource):
+#     def get(self, shortname):
+#         conn = sqlite3.connect(dbfile)
+#         cur = conn.cursor()
+#
 
 
 api.add_resource(MakePrediction, '/api/predict')

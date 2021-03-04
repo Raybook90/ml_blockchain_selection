@@ -37,7 +37,7 @@ def train_decisiontree():
     dt = DecisionTreeClassifier().fit(X_train, y_train)
     predictions = dt.predict(X_test)
     accuracy = accuracy_score(y_test, predictions)
-    joblib.dump(dt, 'decision-tree.model')
+    joblib.dump(dt, 'decision-tree-without-datasize-feature.model')
     print('Model Training Finished. \n \tAccuracy obtained: {}'.format(accuracy))
 
     return dt
