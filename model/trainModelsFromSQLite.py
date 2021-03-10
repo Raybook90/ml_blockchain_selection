@@ -7,7 +7,7 @@ import pandas as pd
 import sqlite3
 
 
-def train_decision_tree():
+def train_models():
     con = sqlite3.connect('../../Desktop/Uzh/Master_Thesis/bcio.db')
     query = "SELECT name as blockchain, type, smart_contract, turing_complete, platform_transaction_speed, popularity, " \
             "MinArbitraryData FROM blockchains_for_dataset NATURAL JOIN attributes_for_dataset"
@@ -60,7 +60,7 @@ def train_decision_tree():
     # print('Model Training Finished. \n \tAccuracy obtained: {}'.format(accuracy))
 
     # Serialize decision tree model
-    joblib.dump(dt, 'decision-tree-26-02-2021.model')
+    joblib.dump(dt, 'decision-tree.model')
 
     #  Train naive bayes classifier
     nb_clf = MultinomialNB().fit(X,y)

@@ -1,8 +1,7 @@
 import os
 from flask import Flask, jsonify, request, render_template
 from flask_restful import Api, Resource, reqparse
-from model.decisionTree import train_decisiontree
-from model.decisionTreeSQLite import train_decision_tree
+from model.trainModelsFromSQLite import train_models
 import joblib
 import numpy as np
 import sqlite3
@@ -18,10 +17,10 @@ api = Api(app)
 # label_encoder = joblib.load('label_encoder.joblib')
 # dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
 
-if not os.path.isfile('decision-tree-26-02-2021.model'):
-    train_decision_tree()
+if not os.path.isfile('decision-tree.model'):
+    train_models()
 
-model = joblib.load('decision-tree-26-02-2021.model')
+model = joblib.load('decision-tree.model')
 label_encoder = joblib.load('label_encoder.joblib')
 dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
 
