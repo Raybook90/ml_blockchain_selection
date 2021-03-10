@@ -1,5 +1,6 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
+from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import accuracy_score
 import joblib
 import pandas as pd
@@ -44,19 +45,26 @@ def train_decision_tree():
     le = LabelEncoder()
     y = le.fit_transform(y)
 
-    #Serialize LabelEncoder with pickle
+    # Serialize LabelEncoder with pickle
     #pickle.dump(le, open('label_encoder.obj', 'wb'))
 
-    #Serialize LabelEncoder with joblib
+    # Serialize LabelEncoder with joblib
     joblib.dump(le, 'label_encoder.joblib')
 
     # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
+    # Train decision tree
     dt = DecisionTreeClassifier().fit(X, y)
     # predictions = dt.predict(X_test)
     # accuracy = accuracy_score(y_test, predictions)
-    joblib.dump(dt, 'decision-tree-26-02-2021.model')
     # print('Model Training Finished. \n \tAccuracy obtained: {}'.format(accuracy))
+
+    # Serialize decision tree model
+    joblib.dump(dt, 'decision-tree-26-02-2021.model')
+
+    #  Train naive bayes classifier
+    nb_clf = MultinomialNB().fit(X,y)
+    joblib.dump(nb_clf, 'naive-bayes.model')
 
     return dt
 

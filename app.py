@@ -105,7 +105,7 @@ class MakePrediction(Resource):
                            args['popularity'], args['data_size']]
         prediction = value_predictor(to_predict_list)
         return jsonify({
-            'Prediction': prediction
+            'name': prediction
         })
 
 
@@ -144,4 +144,4 @@ api.add_resource(Blockchains, '/api/blockchains')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
