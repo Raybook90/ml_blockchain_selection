@@ -10,17 +10,11 @@ import json
 app = Flask(__name__)
 api = Api(app)
 
-# if not os.path.isfile('decision-tree-without-datasize-feature.model'):
-#     train_decisiontree()
-#
-# model = joblib.load('decision-tree-without-datasize-feature.model')
-# label_encoder = joblib.load('label_encoder.joblib')
-# dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
-
 if not os.path.isfile('decision-tree.model'):
     train_models()
 
-model = joblib.load('decision-tree.model')
+dt_model = joblib.load('decision-tree.model')
+nb_model = joblib.load('naive-bayes.model')
 label_encoder = joblib.load('label_encoder.joblib')
 dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
 
@@ -55,16 +49,18 @@ def result():
         dict_yes_no = {'1': 'Yes', '0': 'No'}
         dict_ordinal = {'1': 'Low', '2': 'Medium', '3': 'High'}
 
+        model = request.form.get('model')
         type = request.form.get('Type')
         smartContract = request.form.get('smartContract')
         turingComplete = request.form.get('turingComplete')
         transactionSpeed = request.form.get('transactionSpeed')
         popularity = request.form.get('popularity')
         minArbitraryData = request.form.get('MinArbitraryData')
-        to_predict_list = [int(type), int(smartContract), int(turingComplete), int(transactionSpeed), int(popularity), minArbitraryData]
-        selected_blockchain = value_predictor(to_predict_list)
+        to_predict_list = [model, int(type), int(smartContract), int(turingComplete), int(transactionSpeed), int(popularity), minArbitraryData]
+        selected_blockchain = blockchain_predictor(to_predict_list)
         return render_template("prediction.html", original_input=
-        {'Type': dict_type[type],
+        {'Model': model,
+         'Type': dict_type[type],
          'Smart Contracts': dict_yes_no[smartContract],
          'Turing-complete': dict_yes_no[turingComplete],
          'Transaction Speed': dict_ordinal[transactionSpeed],
@@ -72,15 +68,19 @@ def result():
          'Data size': minArbitraryData}, prediction=selected_blockchain)
 
 
-def value_predictor(to_predict_list):
-    to_predict = np.array(to_predict_list).reshape(1,len(to_predict_list))
-    prediction_without_label = model.predict(to_predict)
+def blockchain_predictor(to_predict_list):
+    to_predict = np.array(to_predict_list[1:]).reshape(1, len(to_predict_list)-1)
+    if to_predict_list[0] == 'decision_tree':
+        prediction_without_label = dt_model.predict(to_predict)
+    else:
+        prediction_without_label = nb_model.predict(to_predict)
     result_with_label = label_encoder.inverse_transform(prediction_without_label)
     return result_with_label[0]
 
 
 # Define parser and request args
 parser = reqparse.RequestParser()
+parser.add_argument("model", type=str, help="Please choose which ML algorithm to use", required=True, location='json')
 parser.add_argument("type", type=int, help="Preferred Type of BC is required", required=True,
                     location='json')
 parser.add_argument("smart_contract", type=int, help="Smart Contract Supportability is required",
@@ -100,9 +100,9 @@ class MakePrediction(Resource):
     def post():
 
         args = parser.parse_args()
-        to_predict_list = [args['type'], args['smart_contract'], args['turing_complete'], args['transaction_speed'],
+        to_predict_list = [args['model'], args['type'], args['smart_contract'], args['turing_complete'], args['transaction_speed'],
                            args['popularity'], args['data_size']]
-        prediction = value_predictor(to_predict_list)
+        prediction = blockchain_predictor(to_predict_list)
         return jsonify({
             'name': prediction
         })

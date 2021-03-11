@@ -17,4 +17,4 @@ data = pd.read_sql_query(query, con)
 
 # data = data.drop('blocktime', axis='columns')
 
-data.to_csv('dataset24feb2021.csv', index=False)
+data.to_csv('dataset.csv', index=False)

@@ -20,6 +20,13 @@
 <div align="center">
   <form action="/result" method="POST">
     <div class="col-md-6">
+        <label  class="form-label"><strong>Which ML model do you want to use</strong></label>
+        <br>
+        <input type="radio" name="model" value="decision_tree" checked>Decision Tree
+        <input type="radio" name="model" value="naive_bayes">Naive Bayes
+    </div>
+    <br>
+    <div class="col-md-6">
         <label for="formTypeInput" class="form-label"><strong>Type</strong></label>
         <select name='Type' class="form-select" id="formTypeInput" aria-label="Default select example" required>
           <option value="" selected>Choose...<option/>
@@ -66,7 +73,7 @@
         </select>
     </div>
     <br>
-      <div class="col-md-6">
+    <div class="col-md-6">
           <label for="formMinDataInput" class="form-label"><strong>Min Arbitrary Data in Bytes</strong></label>
         <input type="number" id="formMinDataInput" name="MinArbitraryData" min="5" max="512000" required>
     </div>
