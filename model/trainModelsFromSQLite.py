@@ -1,6 +1,7 @@
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.naive_bayes import MultinomialNB
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import joblib
 import pandas as pd
@@ -62,7 +63,11 @@ def train_models():
     # Serialize decision tree model
     joblib.dump(dt, 'decision-tree.model')
 
-    #  Train naive bayes classifier
+    # Train random forest classifier
+    rf = RandomForestClassifier(n_estimators=5).fit(X, y)
+    joblib.dump(rf, 'random-forest.model')
+
+    # Train naive bayes classifier
     nb_clf = MultinomialNB().fit(X,y)
     joblib.dump(nb_clf, 'naive-bayes.model')
 

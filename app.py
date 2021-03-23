@@ -13,8 +13,13 @@ api = Api(app)
 if not os.path.isfile('decision-tree.model'):
     train_models()
 
+# Decision Tree
 dt_model = joblib.load('decision-tree.model')
+# Random Forest
+rf_model = joblib.load('random-forest.model')
+# Naive Bayes
 nb_model = joblib.load('naive-bayes.model')
+
 label_encoder = joblib.load('label_encoder.joblib')
 dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
 
@@ -72,6 +77,8 @@ def blockchain_predictor(to_predict_list):
     to_predict = np.array(to_predict_list[1:]).reshape(1, len(to_predict_list)-1)
     if to_predict_list[0] == 'decision_tree':
         prediction_without_label = dt_model.predict(to_predict)
+    elif to_predict_list[0] == 'random_forest':
+        prediction_without_label = rf_model.predict(to_predict)
     else:
         prediction_without_label = nb_model.predict(to_predict)
     result_with_label = label_encoder.inverse_transform(prediction_without_label)
@@ -103,8 +110,26 @@ class MakePrediction(Resource):
         to_predict_list = [args['model'], args['type'], args['smart_contract'], args['turing_complete'], args['transaction_speed'],
                            args['popularity'], args['data_size']]
         prediction = blockchain_predictor(to_predict_list)
+        blockchain_shortname = {
+            'Bitcoin': 'BTC',
+            'Ethereum': 'ETH',
+            'Stellar': 'XLM',
+            'EOS': 'EOS',
+            'IOTA': 'MIOTA',
+            'Hyperledger': 'HYP',
+            'Multichain': 'MLC',
+            'R3 Corda': 'COR',
+            'Stratis': 'STRAX',
+            'Neo': 'NEO',
+            'Cardano': 'ADA',
+            'Ripple': 'XRP',
+            'QTUM': 'QTUM',
+            'ICON': 'ICX',
+            'VeChain': 'VET',
+            'Wanchain': 'WAN'
+        }
         return jsonify({
-            'name': prediction
+            'name': blockchain_shortname[prediction]
         })
 
 

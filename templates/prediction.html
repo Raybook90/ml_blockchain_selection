@@ -12,7 +12,7 @@
     <hr class="my-4">
 <!--    <p>It uses Python, Flask, Bootstrap and SQLite.</p>-->
     <p class="lead">
-        <a class="btn btn-primary btn-lg" href="{{ url_for('home') }}" role="button">Home</a>
+        <a class="btn btn-primary btn-lg" href="{{ url_for('home') }}" role="button">Available Blockchains</a>
     </p>
 </div>
 
@@ -22,22 +22,21 @@
     <div class="col-md-6">
         <label  class="form-label"><strong>Which ML model do you want to use</strong></label>
         <br>
-        <input type="radio" name="model" value="decision_tree" checked>Decision Tree
+        <input type="radio" name="model" value="decision_tree">Decision Tree
+        <input type="radio" name="model" value="random_forest">Random Forest
         <input type="radio" name="model" value="naive_bayes">Naive Bayes
     </div>
     <br>
     <div class="col-md-6">
-        <label for="formTypeInput" class="form-label"><strong>Type</strong></label>
-        <select name='Type' class="form-select" id="formTypeInput" aria-label="Default select example" required>
-          <option value="" selected>Choose...<option/>
-          <option value="0">Private</option>
-          <option value="1">Public</option>
-        </select>
+        <label  class="form-label"><strong>Blockchain Type</strong></label>
+        <br>
+        <input type="radio" name="Type" value="0">Private
+        <input type="radio" name="Type" value="1">Public
     </div>
     <br>
     <div class="col-md-6">
         <label for="formSmartContractInput" class="form-label"><strong>Smart Contract Supportability</strong></label>
-        <select name='smartContract' class="form-select" id="formSmartContractInput" aria-label="Default select example" required>
+        <select style="width:30%" name='smartContract' class="form-select" id="formSmartContractInput" aria-label="Default select example" required>
           <option value="" selected>Choose...<option/>
           <option value="0">No</option>
           <option value="1">Yes</option>
@@ -46,7 +45,7 @@
       <br>
     <div class="col-md-6">
         <label for="formTuringCompleteInput" class="form-label"><strong>Turing Completness</strong></label>
-        <select name='turingComplete' class="form-select" id="formTuringCompleteInput" aria-label="Default select example" required>
+        <select style="width:30%" name='turingComplete' class="form-select" id="formTuringCompleteInput" aria-label="Default select example" required>
           <option value="" selected>Choose...<option/>
           <option value="0">No</option>
           <option value="1">Yes</option>
@@ -55,7 +54,7 @@
     <br>
     <div class="col-md-6">
         <label for="formTransactionSpeedInput" class="form-label"><strong>Platform Transaction Speed</strong></label>
-        <select name='transactionSpeed' class="form-select" id="formTransactionSpeedInput" aria-label="Default select example" required>
+        <select style="width:30%" name='transactionSpeed' class="form-select" id="formTransactionSpeedInput" aria-label="Default select example" required>
           <option value="" selected>Choose...<option/>
           <option value="1">Low</option>
           <option value="2">Medium</option>
@@ -65,7 +64,7 @@
     <br>
     <div class="col-md-6">
         <label for="formPopularityInput" class="form-label"><strong>Popularity</strong></label>
-        <select name='popularity' class="form-select" id="formPopularityInput" aria-label="Default select example" required>
+        <select style="width:30%" name='popularity' class="form-select" id="formPopularityInput" aria-label="Default select example" required>
           <option value="" selected>Choose...<option/>
           <option value="1">Low</option>
           <option value="2">Medium</option>
