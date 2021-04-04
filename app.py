@@ -17,6 +17,8 @@ if not os.path.isfile('decision-tree.model'):
 dt_model = joblib.load('decision-tree.model')
 # Random Forest
 rf_model = joblib.load('random-forest.model')
+# Support Vector Machine
+svm_model = joblib.load('svm.model')
 # Naive Bayes
 nb_model = joblib.load('naive-bayes.model')
 
@@ -53,6 +55,8 @@ def result():
         dict_type = {'1': 'Public', '0': 'Private'}
         dict_yes_no = {'1': 'Yes', '0': 'No'}
         dict_ordinal = {'1': 'Low', '2': 'Medium', '3': 'High'}
+        dict_model = {'decision_tree': 'Decision Tree', 'random_forest': 'Random Forest', 'naive_bayes': 'Naive Bayes',
+                      'support_vector_machine': 'Support Vector Machine'}
 
         model = request.form.get('model')
         type = request.form.get('Type')
@@ -64,7 +68,7 @@ def result():
         to_predict_list = [model, int(type), int(smartContract), int(turingComplete), int(transactionSpeed), int(popularity), minArbitraryData]
         selected_blockchain = blockchain_predictor(to_predict_list)
         return render_template("prediction.html", original_input=
-        {'Model': model,
+        {'Model': dict_model[model],
          'Type': dict_type[type],
          'Smart Contracts': dict_yes_no[smartContract],
          'Turing-complete': dict_yes_no[turingComplete],
@@ -79,6 +83,8 @@ def blockchain_predictor(to_predict_list):
         prediction_without_label = dt_model.predict(to_predict)
     elif to_predict_list[0] == 'random_forest':
         prediction_without_label = rf_model.predict(to_predict)
+    elif to_predict_list[0] == 'support_vector_machine':
+        prediction_without_label = svm_model.predict(to_predict)
     else:
         prediction_without_label = nb_model.predict(to_predict)
     result_with_label = label_encoder.inverse_transform(prediction_without_label)

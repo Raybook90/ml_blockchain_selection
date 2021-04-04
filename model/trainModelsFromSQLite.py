@@ -2,6 +2,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import LabelEncoder
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.ensemble import RandomForestClassifier
+from imblearn.over_sampling import RandomOverSampler
+from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 import joblib
 import pandas as pd
@@ -43,33 +45,34 @@ def train_models():
     X = df.drop('blockchain', axis=1)
     y = df['blockchain']
 
-    le = LabelEncoder()
-    y = le.fit_transform(y)
+    # Oversample minority classes with RandomOverSampler
+    ros = RandomOverSampler(random_state=777)
+    X_ROS, y_ROS = ros.fit_resample(X,y)
 
-    # Serialize LabelEncoder with pickle
-    #pickle.dump(le, open('label_encoder.obj', 'wb'))
+    # Instantiate LabelEncoder and transform target values
+    le = LabelEncoder()
+    y_ROS = le.fit_transform(y_ROS)
 
     # Serialize LabelEncoder with joblib
     joblib.dump(le, 'label_encoder.joblib')
 
-    # X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-
-    # Train decision tree
-    dt = DecisionTreeClassifier().fit(X, y)
-    # predictions = dt.predict(X_test)
-    # accuracy = accuracy_score(y_test, predictions)
-    # print('Model Training Finished. \n \tAccuracy obtained: {}'.format(accuracy))
+    # Train Decision Tree
+    dt = DecisionTreeClassifier().fit(X_ROS, y_ROS)
 
     # Serialize decision tree model
     joblib.dump(dt, 'decision-tree.model')
 
-    # Train random forest classifier
-    rf = RandomForestClassifier(n_estimators=5).fit(X, y)
+    # Train Random Forest
+    rf = RandomForestClassifier(n_estimators=20).fit(X_ROS, y_ROS)
     joblib.dump(rf, 'random-forest.model')
 
-    # Train naive bayes classifier
-    nb_clf = MultinomialNB().fit(X,y)
+    # Train Naive Bayes
+    nb_clf = MultinomialNB().fit(X_ROS, y_ROS)
     joblib.dump(nb_clf, 'naive-bayes.model')
 
-    return dt
+    # Train Support Vector Machine
+    svm_clf = SVC(kernel='linear', C=1).fit(X_ROS, y_ROS)
+    joblib.dump(svm_clf, 'svm.model')
+
+    return
 
