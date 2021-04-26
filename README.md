@@ -6,7 +6,8 @@ This is a Machine Learning based Blockchain Selection prototype that can be used
 
 Clone the repository:
 
-git clone https://github.com/Raybook90/ml_blockchain_selection.git
+git clone https://github.com/Raybook90/ml_blockchain_selection.git 
+
 cd ml_blockchain_selection 
 
 Create a virtual environment:
