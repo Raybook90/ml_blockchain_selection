@@ -23,7 +23,7 @@ svm_model = joblib.load('svm.model')
 nb_model = joblib.load('naive-bayes.model')
 
 label_encoder = joblib.load('label_encoder.joblib')
-dbfile = '../../Desktop/Uzh/Master_Thesis/bcio.db'
+dbfile = 'bcio.db'
 
 
 @app.route("/")
@@ -78,41 +78,44 @@ def result():
 
 
 def blockchain_predictor(to_predict_list):
-    to_predict = np.array(to_predict_list[1:]).reshape(1, len(to_predict_list)-1)
-    if to_predict_list[0] == 'decision_tree':
-        prediction_without_label = dt_model.predict(to_predict)
-    elif to_predict_list[0] == 'random_forest':
-        prediction_without_label = rf_model.predict(to_predict)
-    elif to_predict_list[0] == 'support_vector_machine':
-        prediction_without_label = svm_model.predict(to_predict)
+    # Convert input to array
+    # to_predict = np.array(to_predict_list[1:]).reshape(1, len(to_predict_list)-1)
+    features = [np.array(to_predict_list[1:])]
+    chosen_model = to_predict_list[0]
+    if chosen_model == 'decision_tree':
+        prediction = dt_model.predict(features)
+    elif chosen_model == 'random_forest':
+        prediction = rf_model.predict(features)
+    elif chosen_model == 'support_vector_machine':
+        prediction = svm_model.predict(features)
     else:
-        prediction_without_label = nb_model.predict(to_predict)
-    result_with_label = label_encoder.inverse_transform(prediction_without_label)
-    return result_with_label[0]
-
-
-# Define parser and request args
-parser = reqparse.RequestParser()
-parser.add_argument("model", type=str, help="Please choose which ML algorithm to use", required=True, location='json')
-parser.add_argument("type", type=int, help="Preferred Type of BC is required", required=True,
-                    location='json')
-parser.add_argument("smart_contract", type=int, help="Smart Contract Supportability is required",
-                    required=True, location='json')
-parser.add_argument("turing_complete", type=int, help="Turing Completeness is required", required=True,
-                    location='json')
-parser.add_argument("transaction_speed", type=int, help="Transaction Speed is required", required=True,
-                    location='json')
-parser.add_argument("popularity", type=int, help="Popularity is required", required=True,
-                    location='json')
-parser.add_argument("data_size", type=int, help="Please specify minimum amount of data (bytes) that "
-                                                         "should be supported", required=True, location='json')
+        prediction = nb_model.predict(features)
+    # Inverse transform to get the original dependent value
+    prediction_decoded = label_encoder.inverse_transform(prediction)
+    return prediction_decoded[0]
 
 
 class MakePrediction(Resource):
     @staticmethod
     def post():
-
+        # Define parser and request args
+        parser = reqparse.RequestParser()
+        parser.add_argument("model", type=str, help="Please choose which ML algorithm to use", required=True,
+                            location='json')
+        parser.add_argument("type", type=int, help="Preferred Type of BC is required", required=True,
+                            location='json')
+        parser.add_argument("smart_contract", type=int, help="Smart Contract Supportability is required",
+                            required=True, location='json')
+        parser.add_argument("turing_complete", type=int, help="Turing Completeness is required", required=True,
+                            location='json')
+        parser.add_argument("transaction_speed", type=int, help="Transaction Speed is required", required=True,
+                            location='json')
+        parser.add_argument("popularity", type=int, help="Popularity is required", required=True,
+                            location='json')
+        parser.add_argument("data_size", type=int, help="Please specify minimum amount of data (bytes) that "
+                                                        "should be supported", required=True, location='json')
         args = parser.parse_args()
+        # Convert input to list
         to_predict_list = [args['model'], args['type'], args['smart_contract'], args['turing_complete'], args['transaction_speed'],
                            args['popularity'], args['data_size']]
         prediction = blockchain_predictor(to_predict_list)

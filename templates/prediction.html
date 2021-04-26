@@ -22,7 +22,7 @@
     <div class="col-md-6">
         <label  class="form-label"><strong>Which ML model do you want to use</strong></label>
         <br>
-        <input type="radio" name="model" value="decision_tree" required>Decision Tree <br>
+        <input type="radio" name="model" value="decision_tree" required checked>Decision Tree <br>
         <input type="radio" name="model" value="random_forest">Random Forest <br>
         <input type="radio" name="model" value="support_vector_machine">Support Vector Machine <br>
         <input type="radio" name="model" value="naive_bayes">Naive Bayes
@@ -32,23 +32,23 @@
         <label  class="form-label"><strong>Blockchain Type</strong></label>
         <br>
         <input type="radio" name="Type" value="0" required>Private
-        <input type="radio" name="Type" value="1">Public
+        <input type="radio" name="Type" value="1" checked>Public
     </div>
     <br>
     <div class="col-md-6">
         <label for="formSmartContractInput" class="form-label"><strong>Smart Contract Supportability</strong></label>
-        <select style="width:30%" name='smartContract' class="form-select" id="formSmartContractInput" aria-label="Default select example" required>
-          <option value="" selected>Choose...<option/>
+        <select style="width:30%" name='smartContract' class="form-select" id="formSmartContractInput" aria-label="Default select example" onchange="showHideDiv()" required>
+<!--          <option value="" selected>Choose...<option/>-->
           <option value="0">No</option>
           <option value="1">Yes</option>
         </select>
     </div>
       <br>
-    <div class="col-md-6">
+    <div class="col-md-6" id="div-Form-Turing-Rati">
         <label for="formTuringCompleteInput" class="form-label"><strong>Turing Completness</strong></label>
         <select style="width:30%" name='turingComplete' class="form-select" id="formTuringCompleteInput" aria-label="Default select example" required>
-          <option value="" selected>Choose...<option/>
-          <option value="0">No</option>
+<!--          <option value="" selected>Choose...<option/>-->
+          <option value="0" selected>No</option>
           <option value="1">Yes</option>
         </select>
     </div>
@@ -56,7 +56,7 @@
     <div class="col-md-6">
         <label for="formTransactionSpeedInput" class="form-label"><strong>Platform Transaction Speed</strong></label>
         <select style="width:30%" name='transactionSpeed' class="form-select" id="formTransactionSpeedInput" aria-label="Default select example" required>
-          <option value="" selected>Choose...<option/>
+<!--          <option value="" selected>Choose...<option/>-->
           <option value="1">Low</option>
           <option value="2">Medium</option>
           <option value="3">High</option>
@@ -66,16 +66,16 @@
     <div class="col-md-6">
         <label for="formPopularityInput" class="form-label"><strong>Popularity</strong></label>
         <select style="width:30%" name='popularity' class="form-select" id="formPopularityInput" aria-label="Default select example" required>
-          <option value="" selected>Choose...<option/>
+<!--          <option value="" selected>Choose...<option/>-->
           <option value="1">Low</option>
           <option value="2">Medium</option>
-          <option value="3">High</option>
+          <option value="3" selected>High</option>
         </select>
     </div>
     <br>
     <div class="col-md-6">
           <label for="formMinDataInput" class="form-label"><strong>Min Arbitrary Data in Bytes</strong></label>
-        <input type="number" id="formMinDataInput" name="MinArbitraryData" min="1" max="512000" required>
+        <input type="number" id="formMinDataInput" name="MinArbitraryData" min="1" max="512000" value=20 required>
     </div>
     <br>
     <input type="submit" value="Select">
@@ -93,6 +93,26 @@
            <p style="font-size:50px">{{ prediction }}</p>
     {% endif %}
 </div>
+
+<script type="application/javascript">
+
+    function showHideDiv() {
+        var chkYes = true;
+        var formSmartContractInput = document.getElementById("formSmartContractInput").value;
+        console.log(formSmartContractInput);
+
+        if(formSmartContractInput == 0 && formSmartContractInput !=""){
+            chkYes = false;
+        }
+
+        console.log('chkYes',chkYes);
+        var turingCompleteRati = document.getElementById("div-Form-Turing-Rati");
+
+        turingCompleteRati.style.display = chkYes  ? "block" : "none";
+    }
+
+</script>
+
 <!--<strong>Blockchain selected: {{ prediction }}</strong>-->
 </body>
 </html>
