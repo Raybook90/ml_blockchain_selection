@@ -4,3 +4,6 @@ This is a Machine Learning based Blockchain Selection prototype that can be used
 
 ## Build
 
+Clone the repository:
+
+
