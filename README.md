@@ -6,4 +6,18 @@ This is a Machine Learning based Blockchain Selection prototype that can be used
 
 Clone the repository:
 
+git clone https://github.com/Raybook90/ml_blockchain_selection.git
+
+Create a virtual environment:
+
+$ python -m venv venv
+
+Activate the virtual environment:
+
+$ venv\Scripts\activate
+
+Install dependencies:
+
+(venv) $ pip install -r requirements.txt
+
 
