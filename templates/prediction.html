@@ -39,8 +39,8 @@
         <label for="formSmartContractInput" class="form-label"><strong>Smart Contract Supportability</strong></label>
         <select style="width:30%" name='smartContract' class="form-select" id="formSmartContractInput" aria-label="Default select example" onchange="showHideDiv()" required>
 <!--          <option value="" selected>Choose...<option/>-->
-          <option value="0">No</option>
-          <option value="1">Yes</option>
+          <option value="0" id="chkNo"selected>No</option>
+          <option value="1" id="chkYes">Yes</option>
         </select>
     </div>
       <br>
@@ -95,13 +95,12 @@
 </div>
 
 <script type="application/javascript">
-
     function showHideDiv() {
         var chkYes = true;
         var formSmartContractInput = document.getElementById("formSmartContractInput").value;
         console.log(formSmartContractInput);
 
-        if(formSmartContractInput == 0 && formSmartContractInput !=""){
+        if(formSmartContractInput == 0) {
             chkYes = false;
         }
 
@@ -110,6 +109,7 @@
 
         turingCompleteRati.style.display = chkYes  ? "block" : "none";
     }
+
 
 </script>
 
