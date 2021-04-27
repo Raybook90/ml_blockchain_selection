@@ -1,6 +1,6 @@
-from general_functions import *
+from api_blocktime.NEO import convert_unix_to_datetime, total_seconds_blocktime_difference
 from requests import Request, Session
-from datetime import datetime
+
 
 def get_blocktime_ripple():
     url_stats = 'https://api.blockchair.com/ripple/stats'
@@ -21,10 +21,6 @@ def get_blocktime_ripple():
     blocktime_current_unix = block_data_current.get('data').get(str(current_blockheight)).get('ledger').get('close_time')
     blocktime_previous_unix = block_data_previous.get('data').get(str(current_blockheight-1)).get('ledger').get('close_time')
 
-    # Print times of current and previous block to check validity
-    # print(convert_unix_to_datetime(blocktime_current_unix))
-    # print(convert_unix_to_datetime(blocktime_previous_unix))
-
     # get difference of blocktime current and previous UNIX
     blocktime_difference_unix = blocktime_current_unix - blocktime_previous_unix
 
@@ -33,5 +29,3 @@ def get_blocktime_ripple():
 
     return total_seconds_blocktime_difference(blocktime_difference)
 
-
-# print(get_blocktime_ripple())

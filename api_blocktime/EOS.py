@@ -1,6 +1,5 @@
 from requests import Request, Session
 from datetime import datetime
-import json
 
 
 def get_blocktime_eos ():
@@ -33,10 +32,6 @@ def get_blocktime_eos ():
     # Extract data in json format
     previous = response_previous_block.json()
 
-
-    # print(head['timestamp'])
-    # print(previous['timestamp'])
-
     fmt = '%Y-%m-%dT%H:%M:%S.%f'
 
     tstamp_head = datetime.strptime(head['timestamp'], fmt)
@@ -45,7 +40,5 @@ def get_blocktime_eos ():
 
     return td
 
-
-# print(get_blocktime_EOS())
 
 

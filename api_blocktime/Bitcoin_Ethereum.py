@@ -2,13 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
-import sqlite3
-                              
-
-#print(crypto_stats)
-# blocktime = page_soup.findAll("tr", {"id":"t_time"})
-#
-# print(blocktime)
 
 
 def get_blocktime(blockchain):
@@ -62,8 +55,8 @@ def get_blocktime(blockchain):
     df = df.drop(['Litecoin(Explorer, top100)', 'Bitcoin Cash(Explorer, top100)', 'Bitcoin SV(Explorer, top100)',
                   'Monero', 'Dash(Explorer, top100)', 'Zcash', 'Ethereum Classic', 'Dogecoin(Explorer, top100)',
                   'Bitcoin Gold(Explorer, top100)', 'Reddcoin(Explorer, top100)', 'Vertcoin(Explorer, top100)',
-                  'Namecoin(Explorer, top100)', 'Blackcoin(Explorer, top100)', 'Feathercoin(Explorer, top100)',
-                  'Novacoin(Explorer, top100)'], 1)
+                   'Blackcoin(Explorer, top100)', 'Feathercoin(Explorer, top100)',
+                  ], 1)
 
     pd.set_option("display.max_rows", None, "display.max_columns", None)
     df.rename(columns={'Bitcoin(Explorer, top100)': 'Bitcoin'}, inplace=True)
@@ -79,14 +72,6 @@ def get_blocktime(blockchain):
         total_seconds = float(blocktime_target[:-1])
     return total_seconds
 
-
-# print(get_blocktime('Ethereum'))
-
-
-# def get_tps(blockchain):
-#     df_tps = df[df['Attributes'] == 'Transactions avg. per hour']
-#     tps_target = df_tps.iloc[0][blockchain]
-#     return float(tps_target)/3600
 
 
 

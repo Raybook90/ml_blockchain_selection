@@ -1,8 +1,8 @@
 from requests import Request, Session
-from general_functions import convert_unix_to_datetime, total_seconds_blocktime_difference
+from api_blocktime.NEO import convert_unix_to_datetime, total_seconds_blocktime_difference
+
 
 def get_blocktime_vechain():
-
     url_main_info = 'https://explore.vechain.org/api/blocks/best'
 
     session = Session()
@@ -27,6 +27,3 @@ def get_blocktime_vechain():
     blocktime_difference = convert_unix_to_datetime(blocktime_difference_UNIX)
 
     return total_seconds_blocktime_difference(blocktime_difference)
-
-
-# print(get_blocktime_vechain())

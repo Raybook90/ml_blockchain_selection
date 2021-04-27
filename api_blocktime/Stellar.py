@@ -1,6 +1,6 @@
-from general_functions import total_seconds_blocktime_difference
 from requests import Request, Session
 from datetime import datetime
+
 
 def get_blocktime_stellar():
     url_stats = 'https://api.blockchair.com/stellar/stats'
@@ -20,17 +20,12 @@ def get_blocktime_stellar():
 
     blocktime_current = block_data_current.get('data').get(str(current_blockheight)).get('ledger').get('closed_at')
     blocktime_previous = block_data_previous.get('data').get(str(current_blockheight-1)).get('ledger').get('closed_at')
-    # print(blocktime_current)
+
     fmt = '%Y-%m-%dT%H:%M:%SZ'
     tstamp_current = datetime.strptime(blocktime_current, fmt)
     tstamp_previous = datetime.strptime(blocktime_previous, fmt)
     td = (tstamp_current - tstamp_previous).total_seconds()
 
-    # Print times of current and previous block to check validity
-    # print(tstamp_previous)
-    # print(tstamp_current)
-
     return td
 
 
-# print(get_blocktime_stellar())

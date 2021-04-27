@@ -1,5 +1,5 @@
 from requests import Request, Session
-from general_functions import convert_unix_to_datetime, total_seconds_blocktime_difference
+from api_blocktime.NEO import convert_unix_to_datetime, total_seconds_blocktime_difference
 
 
 def get_blocktime_wanchain():
@@ -23,6 +23,3 @@ def get_blocktime_wanchain():
     blocktime_difference = convert_unix_to_datetime(blocktime_current_unix - blocktime_previous_unix)
 
     return total_seconds_blocktime_difference(blocktime_difference)
-
-
-# print(get_blocktime_wanchain())

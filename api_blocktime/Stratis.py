@@ -1,10 +1,9 @@
-from general_functions import *
+from api_blocktime.NEO import convert_unix_to_datetime, total_seconds_blocktime_difference
 from requests import Request, Session
-from datetime import datetime
 
 
 def get_blocktime_stratis():
-    #URLs for get requests
+    # URLs for get requests
     url_blockcount = 'https://chainz.cryptoid.info/strax/api.dws?q=getblockcount'
     url_blocktime = 'https://chainz.cryptoid.info/strax/api.dws?q=getblocktime'
 
@@ -40,5 +39,3 @@ def get_blocktime_stratis():
     blocktime_difference = convert_unix_to_datetime(blocktime_difference_UNIX)
 
     return total_seconds_blocktime_difference(blocktime_difference)
-
-# print(get_blocktime_stratis())

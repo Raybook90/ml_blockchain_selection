@@ -22,14 +22,10 @@ def get_blocktime_icon():
     tstamp_previous = datetime.strptime(blocktime_previous, fmt)
     td = (tstamp_current - tstamp_previous).total_seconds()
 
-    # Print times of current and previous block to check validity
-    # print(tstamp_previous)
-    # print(tstamp_current)
-
     return td
 
 
-# print(get_blocktime_icon())
+
 
 
 
