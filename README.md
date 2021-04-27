@@ -1,6 +1,6 @@
 # ML-based Blockchain Selection
 
-This is a Machine Learning based Blockchain Selection prototype that can be used either through a GUI or in conjunction with the Policy-based Blockchain Selection Framework, PleBeuS [1].
+This is a Machine Learning based Blockchain Selection prototype that can be used either through a GUI or in conjunction with the Policy-based Blockchain Selection Framework, PleBeuS [[1]](#1).
 
 Follow the installation steps to setup the Flask Application that offers an API endpoint and a GUI to access the ML models. The GUI is accessible through http://localhost:5000/.
 
@@ -32,6 +32,6 @@ python app.py
 
 ## References
 <a id="1">[1]</a> 
-Dijkstra, E. W. (1968). 
-Go to statement considered harmful. 
-Communications of the ACM, 11(3), 147-148.
+Scheid, E., Lakic, D., Rodrigues, B., Stiller, B. (2020). 
+PleBeuS: a Policy-based Blockchain Selection Framework. 
+in: NOMS 2020 - 2020 IEEE/IFIP Network Operations and Management Symposium. pp. 1-8.
