@@ -2,6 +2,8 @@
 
 This is a Machine Learning based Blockchain Selection prototype that can be used either through a GUI or in conjunction with the Policy-based Blockchain Selection Framework, [PleBeuS](https://github.com/Raybook90/PleBeuS-Integration).
 
+Followed these steps to setup the Flask Application that offers an API endpoint and a GUI to access the ML models. The GUI is accessible through http://localhost:5000/.
+
 ## Installation
 
 Clone the repository:
@@ -25,5 +27,5 @@ Run app.py
 ```
 python app.py
 ```
-Visit http://localhost:5000/
+
 
