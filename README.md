@@ -8,7 +8,7 @@ To use the ML-based solution in conjunction with PleBeuS, PleBeuS needs to be in
 
 ## Installation
 
-Clone the repository:
+Clone the repository and enter the project directory:
 ```
 git clone https://github.com/Raybook90/ml_blockchain_selection.git 
 cd ml_blockchain_selection 
@@ -19,7 +19,9 @@ $ python -m venv venv
 ```
 Activate the virtual environment:
 ```
-$ venv\Scripts\activate
+$ venv\Scripts\activate (Windows)
+or
+$ venv\bin\activate (Linux, macOS)
 ```
 Install dependencies:
 ``` 
@@ -27,7 +29,7 @@ Install dependencies:
 ```
 Run app.py
 ```
-python app.py
+$ python app.py
 ```
 
 ## References
