@@ -31,6 +31,10 @@ Run app.py
 ```
 $ python app.py
 ```
+Deactivate the virtual environment:
+```
+$ deactivate
+```
 
 ## References
 <a id="1">[1]</a> 
