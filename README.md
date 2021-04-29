@@ -21,7 +21,7 @@ Activate the virtual environment:
 ```
 $ venv\Scripts\activate (Windows)
 or
-$ venv\bin\activate (Linux, macOS)
+$ source venv/bin/activate (Linux, macOS)
 ```
 Install dependencies:
 ``` 
