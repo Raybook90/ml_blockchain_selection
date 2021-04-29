@@ -1,7 +1,7 @@
 import pandas as pd
 import sqlite3
 
-con = sqlite3.connect('../bcio.db')
+con = sqlite3.connect('bcio.db')
 
 # query = """
 # SELECT * from dataset;

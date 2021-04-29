@@ -11,7 +11,7 @@ import sqlite3
 
 
 def train_models():
-    con = sqlite3.connect('../bcio.db')
+    con = sqlite3.connect('bcio.db')
     query = "SELECT name as blockchain, type, smart_contract, turing_complete, platform_transaction_speed, popularity, " \
             "MinArbitraryData FROM blockchains_for_dataset NATURAL JOIN attributes_for_dataset"
     raw_data = pd.read_sql_query(query, con)
