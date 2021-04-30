@@ -11,6 +11,7 @@ import sqlite3
 
 
 def train_models():
+    # Connect to db file and get BC data
     con = sqlite3.connect('bcio.db')
     query = "SELECT name as blockchain, type, smart_contract, turing_complete, platform_transaction_speed, popularity, " \
             "MinArbitraryData FROM blockchains_for_dataset NATURAL JOIN attributes_for_dataset"
@@ -26,12 +27,13 @@ def train_models():
                 newrow = raw_data.loc[ind].copy()
                 newrow.MinArbitraryData = row.MinArbitraryData
                 new_rows.append(newrow.values)
-
+    # Create df for these new rows in order to add to existing df
     new_rows_df = pd.DataFrame(new_rows, columns=raw_data.columns)
 
     # Concatenate the two dataframes
     df = pd.concat([raw_data, new_rows_df])
 
+    # Dictionary to transform categorical variables (text) into  a numeric representation
     ordinal_dict = {'Low': 1, 'Medium': 2, 'High': 3}
     boolean_dict = {'Yes': 1, 'No': 0}
     dict_type = {'Public': 1, 'Private': 0}
@@ -42,6 +44,7 @@ def train_models():
     df['platform_transaction_speed'] = df['platform_transaction_speed'].map(ordinal_dict)
     df['popularity'] = df['popularity'].map(ordinal_dict)
 
+    # Split dataset to X = features and y = target variables
     X = df.drop('blockchain', axis=1)
     y = df['blockchain']
 
