@@ -22,34 +22,34 @@
     <div class="col-md-6">
         <label  class="form-label"><strong>Which ML model do you want to use</strong></label>
         <br>
-        <input type="radio" name="model" value="decision_tree" required checked>Decision Tree <br>
-        <input type="radio" name="model" value="random_forest">Random Forest <br>
-        <input type="radio" name="model" value="support_vector_machine">Support Vector Machine <br>
-        <input type="radio" name="model" value="naive_bayes">Naive Bayes
+        <input type="radio" name="model" value="decision_tree" required {% if prediction %} {% if "Decision Tree" in original_input.Model%} {{"checked"}} {% endif %}  {% else %} {{'checked'}} {% endif %} >Decision Tree <br>
+        <input type="radio" name="model" value="random_forest" {% if prediction %} {% if "Random Forest" in original_input.Model%} {{"checked"}} {% endif %}{% endif %} >Random Forest <br>
+        <input type="radio" name="model" value="support_vector_machine" {% if prediction %} {% if "Support Vector Machine" in original_input.Model%} {{"checked"}} {% endif %}{% endif %}>Support Vector Machine <br>
+        <input type="radio" name="model" value="naive_bayes" {% if prediction %} {% if "Naive Bayes" in original_input.Model%} {{"checked"}} {% endif %}{% endif %}>Naive Bayes
     </div>
     <br>
     <div class="col-md-6">
         <label  class="form-label"><strong>Blockchain Type</strong></label>
         <br>
-        <input type="radio" name="Type" value="0" required>Private
-        <input type="radio" name="Type" value="1" checked>Public
+        <input type="radio" name="Type" value="0" required {% if prediction %} {% if "Private" in original_input.Type%} {{"checked"}} {% endif %}{% endif %}>Private
+        <input type="radio" name="Type" value="1" {% if prediction %} {% if "Public" in original_input.Type%} {{"checked"}} {% endif %}  {% else %} {{"checked"}}{% endif %}>Public
     </div>
     <br>
     <div class="col-md-6">
         <label for="formSmartContractInput" class="form-label"><strong>Smart Contract Supportability</strong></label>
         <select style="width:30%" name='smartContract' class="form-select" id="formSmartContractInput" aria-label="Default select example" onchange="showHideDiv()" required>
 <!--          <option value="" selected>Choose...<option/>-->
-          <option value="0" id="chkNo"selected>No</option>
-          <option value="1" id="chkYes">Yes</option>
+          <option value="0" id="chkNo" {% if prediction %} {% if "No" in original_input['Smart Contracts']%} {{"selected"}} {% endif %}{% endif %}>No</option>
+          <option value="1" id="chkYes" {% if prediction %} {% if "Yes" in original_input['Smart Contracts']%} {{"selected"}} {% endif %}{% endif %}>Yes</option>
         </select>
     </div>
       <br>
-    <div class="col-md-6" id="div-Form-Turing-Rati">
+    <div class="col-md-6 default-hide-rh" id="div-Form-Turing-Rati">
         <label for="formTuringCompleteInput" class="form-label"><strong>Turing Completness</strong></label>
         <select style="width:30%" name='turingComplete' class="form-select" id="formTuringCompleteInput" aria-label="Default select example" required>
 <!--          <option value="" selected>Choose...<option/>-->
-          <option value="0" selected>No</option>
-          <option value="1">Yes</option>
+          <option value="0" {% if prediction %} {% if "No" in original_input['Turing-complete']%} {{"selected"}} {% endif %}{% endif %}>No</option>
+          <option value="1" {% if prediction %} {% if "Yes" in original_input['Turing-complete']%} {{"selected"}} {% endif %}{% endif %}>Yes</option>
         </select>
     </div>
     <br>
@@ -57,9 +57,9 @@
         <label for="formTransactionSpeedInput" class="form-label"><strong>Platform Transaction Speed</strong></label>
         <select style="width:30%" name='transactionSpeed' class="form-select" id="formTransactionSpeedInput" aria-label="Default select example" required>
 <!--          <option value="" selected>Choose...<option/>-->
-          <option value="1">Low</option>
-          <option value="2">Medium</option>
-          <option value="3">High</option>
+          <option value="1" {% if prediction %} {% if "Low" in original_input['Transaction Speed']%} {{"selected"}} {% endif %}{% endif %}>Low</option>
+          <option value="2" {% if prediction %} {% if "Medium" in original_input['Transaction Speed']%} {{"selected"}} {% endif %}{% endif %}>Medium</option>
+          <option value="3" {% if prediction %} {% if "High" in original_input['Transaction Speed']%} {{"selected"}} {% endif %}{% endif %}>High</option>
         </select>
     </div>
     <br>
@@ -67,15 +67,15 @@
         <label for="formPopularityInput" class="form-label"><strong>Popularity</strong></label>
         <select style="width:30%" name='popularity' class="form-select" id="formPopularityInput" aria-label="Default select example" required>
 <!--          <option value="" selected>Choose...<option/>-->
-          <option value="1">Low</option>
-          <option value="2">Medium</option>
-          <option value="3" selected>High</option>
+          <option value="1" {% if prediction %} {% if "Low" in original_input['Popularity']%} {{"selected"}} {% endif %}{% endif %}>Low</option>
+          <option value="2" {% if prediction %} {% if "Medium" in original_input['Popularity']%} {{"selected"}} {% endif %}{% endif %}>Medium</option>
+          <option value="3" {% if prediction %} {% if "High" in original_input['Popularity']%} {{"selected"}} {% endif %}  {% else %} {{"selected"}}{% endif %}>High</option>
         </select>
     </div>
     <br>
     <div class="col-md-6">
           <label for="formMinDataInput" class="form-label"><strong>Min Arbitrary Data in Bytes</strong></label>
-        <input type="number" id="formMinDataInput" name="MinArbitraryData" min="1" max="512000" value=20 required>
+        <input type="number" id="formMinDataInput" name="MinArbitraryData" min="1" max="512000" value= {% if prediction %} {{original_input['Data size']}}{% else %} {{'20'}}{% endif %} required>
     </div>
     <br>
     <input type="submit" value="Select">
@@ -94,14 +94,24 @@
     {% endif %}
 </div>
 
+
+
+
 <script type="application/javascript">
+
+    window.onload = showHideDiv();
+
     function showHideDiv() {
-        var chkYes = true;
+        //var chkYes = false;
         var formSmartContractInput = document.getElementById("formSmartContractInput").value;
         console.log(formSmartContractInput);
 
         if(formSmartContractInput == 0) {
             chkYes = false;
+            document.getElementById("formTuringCompleteInput").options[0].selected = true;
+
+        }else{
+            chkYes = true;
         }
 
         console.log('chkYes',chkYes);
@@ -113,6 +123,5 @@
 
 </script>
 
-<!--<strong>Blockchain selected: {{ prediction }}</strong>-->
 </body>
 </html>
