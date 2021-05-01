@@ -60,13 +60,13 @@ def train_models():
     joblib.dump(le, 'label_encoder.joblib')
 
     # Train Decision Tree
-    dt = DecisionTreeClassifier().fit(X_ROS, y_ROS)
+    dt = DecisionTreeClassifier(random_state=24).fit(X_ROS, y_ROS)
 
     # Serialize decision tree model
     joblib.dump(dt, 'decision-tree.model')
 
     # Train Random Forest
-    rf = RandomForestClassifier(n_estimators=20).fit(X_ROS, y_ROS)
+    rf = RandomForestClassifier(random_state=24).fit(X_ROS, y_ROS)
     joblib.dump(rf, 'random-forest.model')
 
     # Train Naive Bayes
@@ -74,7 +74,7 @@ def train_models():
     joblib.dump(nb_clf, 'naive-bayes.model')
 
     # Train Support Vector Machine
-    svm_clf = SVC(kernel='linear', C=1).fit(X_ROS, y_ROS)
+    svm_clf = SVC(kernel='linear', C=1, decision_function_shape='ovo', random_state=24).fit(X_ROS, y_ROS)
     joblib.dump(svm_clf, 'svm.model')
 
     return
