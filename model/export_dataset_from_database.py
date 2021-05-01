@@ -3,10 +3,6 @@ import sqlite3
 
 con = sqlite3.connect('bcio.db')
 
-# query = """
-# SELECT * from dataset;
-# """
-
 query = """
     SELECT name as blockchain, type, smart_contract, turing_complete, platform_transaction_speed, popularity, MinArbitraryData
             FROM blockchains_for_dataset
@@ -14,7 +10,4 @@ query = """
 """
 
 data = pd.read_sql_query(query, con)
-
-# data = data.drop('blocktime', axis='columns')
-
 data.to_csv('dataset.csv', index=False)
