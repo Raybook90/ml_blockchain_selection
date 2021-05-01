@@ -1,3 +1,4 @@
+# import required libraries
 import os
 from flask import Flask, jsonify, request, render_template
 from flask_restful import Api, Resource, reqparse
@@ -7,13 +8,16 @@ import numpy as np
 import sqlite3
 import json
 
+# Instantiate Flask server and initialize Api object
 app = Flask(__name__)
 api = Api(app)
 
+# Check if models are already trained; if not --> train models
 if not os.path.isfile('decision-tree.model'):
     train_models()
 
-# Decision Tree
+# Use joblib to load the trained models
+# Decision tree
 dt_model = joblib.load('decision-tree.model')
 # Random Forest
 rf_model = joblib.load('random-forest.model')
@@ -22,10 +26,13 @@ svm_model = joblib.load('svm.model')
 # Naive Bayes
 nb_model = joblib.load('naive-bayes.model')
 
+# Load label encoder to reconvert numeric labels back into the respective category (BC name)
 label_encoder = joblib.load('label_encoder.joblib')
 dbfile = 'bcio.db'
 
 
+# This route will display the website homepage where the available BCs and their properties are displayed
+# (function serves up the available_blockchains.html)
 @app.route("/")
 def home():
     block_data = query_available_blockchains()
@@ -44,11 +51,14 @@ def query_available_blockchains():
     return data
 
 
+# Route for collection of input variables for model prediction (from webpage)
 @app.route('/prediction/', methods=["POST", "GET"])
 def prediction():
     return render_template('prediction.html')
 
 
+# Route that receives POST request from Webpage, with the user input, it extracts the input and use the blockchain_predictor
+# to get a result and finally render prediction.html with the results in place
 @app.route('/result', methods=['POST'])
 def result():
     if request.method == 'POST':
@@ -77,9 +87,11 @@ def result():
          'Data size': minArbitraryData}, prediction=selected_blockchain)
 
 
+# Prediction function takes list with input variables and converts it into numpy array to be fit into the model.
+# Depending on the model that was selected, the respective model is used for prediction. Finally, the loaded
+# label encoder is used to reconvert the output value from numeric back into the respective category (BC name).
 def blockchain_predictor(to_predict_list):
     # Convert input to array
-    # to_predict = np.array(to_predict_list[1:]).reshape(1, len(to_predict_list)-1)
     features = [np.array(to_predict_list[1:])]
     chosen_model = to_predict_list[0]
     if chosen_model == 'decision_tree':
@@ -95,6 +107,7 @@ def blockchain_predictor(to_predict_list):
     return prediction_decoded[0]
 
 
+# Route handler for prediction endpoint via PleBeuS
 class MakePrediction(Resource):
     @staticmethod
     def post():
@@ -118,6 +131,7 @@ class MakePrediction(Resource):
         # Convert input to list
         to_predict_list = [args['model'], args['type'], args['smart_contract'], args['turing_complete'], args['transaction_speed'],
                            args['popularity'], args['data_size']]
+        # Send input variables to blockchain_predictor method, where the loaded model is applied and the prediction is made
         prediction = blockchain_predictor(to_predict_list)
         blockchain_shortname = {
             'Bitcoin': 'BTC',
@@ -142,6 +156,7 @@ class MakePrediction(Resource):
         })
 
 
+# Route handler to get all available BCs and their properties
 class Blockchains(Resource):
     @staticmethod
     def get():
@@ -162,16 +177,9 @@ class Blockchains(Resource):
         for row in rv:
             json_data.append(dict(zip(row_headers,row)))
         return jsonify(json_data)
-        # return json.dumps([dict(ix) for ix in rows])
 
 
-# class BlockchainByShortName(Resource):
-#     def get(self, shortname):
-#         conn = sqlite3.connect(dbfile)
-#         cur = conn.cursor()
-#
-
-
+# Add API endpoints
 api.add_resource(MakePrediction, '/api/predict')
 api.add_resource(Blockchains, '/api/blockchains')
 
